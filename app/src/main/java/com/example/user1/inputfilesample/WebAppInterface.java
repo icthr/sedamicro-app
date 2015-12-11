@@ -3,16 +3,6 @@ package com.example.user1.inputfilesample;
 import android.content.Context;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
-
-/**
- <input type="button" value="Say hello" onClick="showAndroidToast('Hello Android!')" />
-
- <script type="text/javascript">
- function showAndroidToast(toast) {
- Android.showToast(toast);
- }
- </script>
- */
 public class WebAppInterface {
     public WebAppInterface(MainActivityFragment mainActivityFragment) {
     }

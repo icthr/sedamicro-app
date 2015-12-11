@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference android:title="Destination URL"
         android:key="dest_url"
-        android:defaultValue="http://ec2-54-71-227-112.us-west-2.compute.amazonaws.com/main/"
+        android:defaultValue="https://sedamtest.com/sedatest/wp-content/plugins/sedamicro/"
         android:summary="Please indicate new destination URL"></EditTextPreference>
     <EditTextPreference android:title="Secret Key"
         android:key="dest_key"

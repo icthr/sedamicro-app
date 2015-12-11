@@ -18,6 +18,7 @@ package com.example.user1.inputfilesample;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -36,7 +37,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
+import android.app.AlertDialog;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -62,15 +63,28 @@ public class MainActivityFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getActivity());
 	//TODO:remove in production, as it will be overwritten anyway
-        String dest_url = SP.getString("dest_url", "http://ec2-54-71-227-112.us-west-2.compute.amazonaws.com/sedatest/");
+        String dest_url = SP.getString("dest_url", "https://sedamtest.com/sedatest/wp-content/plugins/sedamicro/");
 
+        if (!dest_url.matches("^https://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"))
+        {
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("Security Alert");
+            alertDialog.setMessage("You have chosen to use an http:// URL, all your files will be sent insecurely over\n" +
+                    "the Internet, are you sure you wish to proceed?");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
         // Get reference of WebView from layout/activity_main.xml
         mWebView = (WebView) rootView.findViewById(R.id.fragment_main_webview);
         mWebView.getSettings().setDefaultFontSize(100);
 
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.setScrollbarFadingEnabled(false);
         mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -229,7 +243,7 @@ public class MainActivityFragment extends Fragment {
         WebSettings settings = webView.getSettings();
 
         // Enable Javascript
-        settings.setJavaScriptEnabled(true);
+        settings.setJavaScriptEnabled(false);
 
         // Use WideViewport and Zoom out if there is no viewport defined
         settings.setUseWideViewPort(true);
